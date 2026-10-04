@@ -1,0 +1,45 @@
+# The three React apps as production images, talking to the Go API (set BACKEND=nest and API_ORIGIN for the Nest API instead).
+# Start the data stores and the API first (see eCommerce-go/README.md), then from here:
+#   docker compose up --build -d
+#   storefront http://localhost:4100   admin http://localhost:4101   seller http://localhost:4102
+# The browser calls the API directly, so API_ORIGIN must be an address the browser can reach. It is baked into each bundle at
+# build time and also allowed by the page's Content-Security-Policy at start-up.
+name: shop-react
+
+x-hardening: &hardening
+  environment:
+    API_ORIGIN: ${API_ORIGIN:-http://localhost:3334}
+  read_only: true
+  tmpfs:
+    - /tmp
+    - /var/cache/nginx
+    # nginx writes its generated config here at start-up (the Content-Security-Policy names the API origin).
+    - /etc/nginx/conf.d:uid=101,gid=101,mode=755
+  cap_drop:
+    - ALL
+  security_opt:
+    - no-new-privileges:true
+  restart: unless-stopped
+
+services:
+  storefront:
+    <<: *hardening
+    image: shop-react-storefront:local
+    build:
+      context: .
+      args: { APP: storefront, VITE_BACKEND: "${BACKEND:-go}", VITE_API_BASE_URL: "${API_ORIGIN:-http://localhost:3334}" }
+    ports: ["4100:8080"]
+  admin:
+    <<: *hardening
+    image: shop-react-admin:local
+    build:
+      context: .
+      args: { APP: admin, VITE_BACKEND: "${BACKEND:-go}", VITE_API_BASE_URL: "${API_ORIGIN:-http://localhost:3334}", VITE_STOREFRONT_URL: "http://localhost:4100" }
+    ports: ["4101:8080"]
+  seller:
+    <<: *hardening
+    image: shop-react-seller:local
+    build:
+      context: .
+      args: { APP: seller, VITE_BACKEND: "${BACKEND:-go}", VITE_API_BASE_URL: "${API_ORIGIN:-http://localhost:3334}" }
+    ports: ["4102:8080"]
