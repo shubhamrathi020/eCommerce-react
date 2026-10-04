@@ -3,6 +3,7 @@ import { createBrowserRouter, Navigate, type RouteObject } from 'react-router';
 import { RequireAuth, RequirePermission } from '@shop/state';
 import { Spinner } from '@shop/ui';
 import { AdminShell } from './layouts/AdminShell';
+import { AnalyticsLayout } from './analytics/Analytics';
 import { ContentLayout, InventoryLayout, MarketplaceLayout, NotificationsLayout, PromotionsLayout, ReturnsLayout } from './layouts/SectionLayout';
 
 /** Every screen is lazy-loaded to keep the initial bundle small. `pick` selects a named export of the module. */
@@ -87,6 +88,51 @@ const children: RouteObject[] = [
       ],
     },
   ]),
+  needs('analytics:read', [
+    {
+      path: 'analytics',
+      element: <AnalyticsLayout />,
+      children: [
+        to('funnel'),
+        { path: 'funnel', element: page(() => import('./analytics/Analytics'), 'FunnelPage') },
+        { path: 'products', element: page(() => import('./analytics/Analytics'), 'ProductPerformancePage') },
+        { path: 'search', element: page(() => import('./analytics/Analytics'), 'SearchAnalyticsPage') },
+        { path: 'campaigns', element: page(() => import('./analytics/Analytics'), 'CampaignsPage') },
+        { path: 'cohorts', element: page(() => import('./analytics/Analytics'), 'CohortsPage') },
+        { path: 'reports', element: page(() => import('./analytics/Analytics'), 'ReportSchedulesPage') },
+      ],
+    },
+  ]),
+  needs('seller:manage', [
+    {
+      path: 'marketplace',
+      element: <MarketplaceLayout />,
+      children: [
+        to('applications'),
+        { path: 'applications', element: page(() => import('./marketplace/Marketplace'), 'ApplicationsPage') },
+        { path: 'sellers', element: page(() => import('./marketplace/Marketplace'), 'SellersPage') },
+        { path: 'listings', element: page(() => import('./marketplace/Marketplace'), 'ListingsPage') },
+        { path: 'commission', element: page(() => import('./marketplace/Marketplace'), 'CommissionPage') },
+        { path: 'payouts', element: page(() => import('./marketplace/Marketplace'), 'PayoutsPage') },
+      ],
+    },
+  ]),
+  needs('recommendation:manage', [{ path: 'recommendations', element: page(() => import('./support/RecommendationsAndSupport'), 'RecommendationsPage') }]),
+  needs('support:manage', [
+    { path: 'support', element: page(() => import('./support/RecommendationsAndSupport'), 'SupportQueuePage') },
+    { path: 'support/:id', element: page(() => import('./support/RecommendationsAndSupport'), 'SupportDetailPage') },
+  ]),
+  needs('notification:manage', [
+    {
+      path: 'notifications',
+      element: <NotificationsLayout />,
+      children: [
+        to('templates'),
+        { path: 'templates', element: page(() => import('./notifications/Notifications'), 'TemplatesPage') },
+        { path: 'log', element: page(() => import('./notifications/Notifications'), 'DeliveryLogPage') },
+      ],
+    },
+  ]),
   needs('review:moderate', [{ path: 'reviews', element: page(() => import('./pages/ReviewsAndUsers'), 'ReviewsPage') }]),
   needs('coupon:write', [{ path: 'coupons', element: page(() => import('./pages/CouponsPage')) }]),
   needs('user:read', [
@@ -111,6 +157,3 @@ export const routes: RouteObject[] = [
 ];
 
 export const createRouter = () => createBrowserRouter(routes);
-
-// Section layouts are used by the grouped routes added below as those screens are ported.
-export { ContentLayout, InventoryLayout, MarketplaceLayout, NotificationsLayout, PromotionsLayout, ReturnsLayout, needs, page, to };
