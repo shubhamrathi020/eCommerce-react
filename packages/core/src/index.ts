@@ -24,3 +24,5 @@ export * from './util/money';
 export * from './util/safe-url';
 export * from './util/content-format';
 export * from './util/seo-files';
+export * from './resource';
+export * from './pwa';
