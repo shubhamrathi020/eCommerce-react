@@ -2,7 +2,7 @@
 #   docker build --build-arg APP=storefront -t shop-react-storefront .
 #   docker build --build-arg APP=admin      -t shop-react-admin .
 #   docker build --build-arg APP=seller     -t shop-react-seller .
-# VITE_BACKEND picks the API the bundle talks to (mock | nest | go); VITE_API_BASE_URL overrides its address. Both are baked
+# VITE_BACKEND picks the API the bundle talks to (mock | nest | go | node | dotnet); VITE_API_BASE_URL overrides its address. Both are baked
 # in when the bundle is built, because a static site has no server-side configuration.
 
 ARG APP=storefront

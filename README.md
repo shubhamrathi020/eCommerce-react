@@ -14,10 +14,12 @@ the same API, so they work with either backend:
 | Built-in mock data in the browser (default) | nothing to run | `VITE_BACKEND=mock` |
 | NestJS API ([`eCommerce-api`](../eCommerce-api)) | `http://localhost:3333` | `VITE_BACKEND=nest` |
 | Go API ([`eCommerce-go`](../eCommerce-go)) | `http://localhost:3334` | `VITE_BACKEND=go` |
+| Node API ([`eCommerce-node`](../eCommerce-node)) | `http://localhost:3335` | `VITE_BACKEND=node` |
+| .NET API ([`eCommerce-dotnet`](../eCommerce-dotnet)) | `http://localhost:3336` | `VITE_BACKEND=dotnet` |
 
-`VITE_API_BASE_URL` overrides the address. Both real backends serve the same API on the same databases, so nothing else changes
+`VITE_API_BASE_URL` overrides the address. All real backends serve the same API on the same databases, so nothing else changes
 between them. With a real backend, sign-in, the catalog, cart, checkout and orders (and, in the admin app, product and order
-management) use the API; screens whose server side does not exist yet in either backend (returns, promotions, recommendations,
+management) use the API; screens whose server side does not exist yet in any backend (returns, promotions, recommendations,
 analytics, marketplace, content) keep using the mock data, exactly as in the Angular apps.
 
 ## Run it
@@ -31,7 +33,7 @@ pnpm start:seller                          # http://localhost:5175  (demo seller
 ```
 
 On Windows PowerShell set the variable first: `$env:VITE_BACKEND = 'go'`. The API must allow the app's origin in its
-`CORS_ORIGINS` (the compose files in `eCommerce-go` already list ports 5173 to 5175 and 4100 to 4102).
+`CORS_ORIGINS` (the compose files in `eCommerce-go`, `eCommerce-node` and `eCommerce-dotnet` already list ports 5173 to 5175 and 4100 to 4102).
 
 ## Check it
 
@@ -81,5 +83,5 @@ Known differences:
 - **No server-side rendering.** The Angular storefront rendered on the server for search engines. These are single-page apps; if
   SEO matters, put a prerender step or an SSR framework in front of the storefront.
 - **Forms** use a small `useForm` helper in `@shop/ui` instead of Angular reactive forms; messages and rules are the same.
-- **Order tracking** polls every 15 seconds, as in the Angular app (the Go API also offers a server-sent-events stream that
+- **Order tracking** polls every 15 seconds, as in the Angular app (all the real APIs also offer a server-sent-events stream that
   neither frontend uses yet).

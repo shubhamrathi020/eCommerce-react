@@ -7,7 +7,7 @@ project. Solo project; the user pushes (never run `git push`).
 ## Sibling repositories
 - `eCommerce`: the Angular apps, requirements, project log, steering docs. Read `steering/rules.md` there before a big task.
 - `eCommerce-api`: NestJS backend; owns the PostgreSQL schema and migrations.
-- `eCommerce-go`: Go backend with the same API on the same databases (port 3334).
+- `eCommerce-go`, `eCommerce-node`, `eCommerce-dotnet`: Go, Node and .NET backends with the same API on the same databases (ports 3334, 3335, 3336).
 - `eCommerce-contracts`: `@ecom/contracts`, the shared types and pure rules (installed from GitHub at a tagged version). A shape
   or rule both sides use is changed there first.
 
@@ -22,7 +22,7 @@ project. Solo project; the user pushes (never run `git push`).
 
 ## Commands
 - `pnpm verify` runs lint, typecheck, tests and build (CI does the same). Storefront tests take a few minutes (axe on large pages).
-- `pnpm start:storefront|admin|seller`; `VITE_BACKEND=mock|nest|go` chooses the backend.
+- `pnpm start:storefront|admin|seller`; `VITE_BACKEND=mock|nest|go|node|dotnet` chooses the backend.
 - `docker compose up --build -d` builds and runs the three production images.
 
 ## Lessons

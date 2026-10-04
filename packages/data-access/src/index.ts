@@ -37,6 +37,8 @@ export { MockEventStore, seedEvents } from './mock/event-store';
 export { MockPromotionStore } from './mock/promotion-store';
 export { RETURN_LIMITS } from './mock/return-store';
 export { ApiClient, toApiException } from './http/api-client';
+export { BACKENDS, resolveBackend } from './http/backends';
+export type { BackendName, ResolvedBackend } from './http/backends';
 export { HttpAuthApi, HttpAddressBookApi } from './http/http-auth.api';
 export { HttpCatalogApi, HttpCategoryApi, HttpSearchApi } from './http/http-catalog.api';
 export { HttpAdminProductApi } from './http/http-admin-catalog.api';
