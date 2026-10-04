@@ -1,8 +1,9 @@
 import { useEffect, useRef } from 'react';
-import { Link, Outlet, useLocation, useSearchParams } from 'react-router';
+import { Link, Outlet, ScrollRestoration, useLocation, useSearchParams } from 'react-router';
 import { AttributionService, ConsentService, NetworkStatusService, useService, useSignal, useT } from '@shop/core';
 import { CartStore } from '@shop/state';
 import { ButtonLink, CartLine, Drawer, OrderSummary, ToastContainer, Button } from '@shop/ui';
+import { CompareBar } from '../catalog/Compare';
 import { Footer } from './Footer';
 import { Header } from './Header';
 
@@ -135,6 +136,8 @@ export function ShellLayout() {
       <MiniCart />
       <CookieBanner />
       <ToastContainer />
+      <CompareBar />
+      <ScrollRestoration />
     </div>
   );
 }

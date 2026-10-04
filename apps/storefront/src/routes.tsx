@@ -20,6 +20,12 @@ export const routes: RouteObject[] = [
     element: <ShellLayout />,
     children: [
       { index: true, element: page(() => import('./catalog/HomePage')) },
+      { path: 'c/:slug', element: page(() => import('./catalog/ListingPage').then((m) => ({ default: m.CategoryListing }))) },
+      { path: 'b/:slug', element: page(() => import('./catalog/ListingPage').then((m) => ({ default: m.BrandListing }))) },
+      { path: 'collections/:slug', element: page(() => import('./catalog/ListingPage').then((m) => ({ default: m.CollectionListing }))) },
+      { path: 'search', element: page(() => import('./catalog/ListingPage').then((m) => ({ default: m.SearchListing }))) },
+      { path: 'p/:slug', element: page(() => import('./catalog/ProductPage')) },
+      { path: 'compare', element: page(() => import('./catalog/Compare')) },
       { path: 'pages/:slug', element: <StaticPage /> },
       { path: '*', element: <RedirectOrNotFound /> },
     ],
