@@ -130,3 +130,38 @@ export function inject<T>(token: Token<T>, options?: { optional?: boolean }): T;
 export function inject<T>(token: Token<T>, options?: { optional?: boolean }): T | null {
   return (current ?? root).get(token, options);
 }
+
+/** A bundle of providers plus start-up work, the counterpart of Angular's EnvironmentProviders. */
+export interface EnvironmentProviders {
+  providers: Provider[];
+  initializers: Array<() => void>;
+}
+
+function isBundle(p: Provider | EnvironmentProviders): p is EnvironmentProviders {
+  return typeof p === 'object' && p !== null && 'initializers' in p;
+}
+
+/** Flattens providers and bundles into one bundle. */
+export function makeEnvironmentProviders(list: Array<Provider | EnvironmentProviders>): EnvironmentProviders {
+  const out: EnvironmentProviders = { providers: [], initializers: [] };
+  for (const item of list) {
+    if (isBundle(item)) {
+      out.providers.push(...item.providers);
+      out.initializers.push(...item.initializers);
+    } else out.providers.push(item);
+  }
+  return out;
+}
+
+/** Work to run once when the injector is created (inside it, so `inject()` works). */
+export function provideEnvironmentInitializer(fn: () => void): EnvironmentProviders {
+  return { providers: [], initializers: [fn] };
+}
+
+/** Creates an injector from providers and runs their initializers. */
+export function createInjector(list: Array<Provider | EnvironmentProviders>, parent?: Injector): Injector {
+  const bundle = makeEnvironmentProviders(list);
+  const injector = new Injector(bundle.providers, parent);
+  injector.run(() => bundle.initializers.forEach((init) => init()));
+  return injector;
+}

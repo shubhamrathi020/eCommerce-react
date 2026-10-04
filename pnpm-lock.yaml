@@ -93,6 +93,12 @@ importers:
 
   packages/core: {}
 
+  packages/data-access:
+    dependencies:
+      '@shop/core':
+        specifier: workspace:*
+        version: link:../core
+
 packages:
 
   '@acemir/cssom@0.9.31':
