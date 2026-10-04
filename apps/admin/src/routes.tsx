@@ -59,6 +59,34 @@ const children: RouteObject[] = [
       ],
     },
   ]),
+  needs('return:manage', [
+    {
+      path: 'returns',
+      element: <ReturnsLayout />,
+      children: [
+        to('queue'),
+        { path: 'queue', element: page(() => import('./returns/ReturnsQueueAndDetail'), 'ReturnsQueuePage') },
+        { path: 'queue/:id', element: page(() => import('./returns/ReturnsQueueAndDetail'), 'ReturnDetailPage') },
+        needs('order:refund', [{ path: 'refunds', element: page(() => import('./returns/RefundsAndPolicy'), 'RefundsPage') }]),
+        { path: 'policy', element: page(() => import('./returns/RefundsAndPolicy'), 'PolicyPage') },
+      ],
+    },
+  ]),
+  needs('promotion:manage', [
+    {
+      path: 'promotions',
+      element: <PromotionsLayout />,
+      children: [
+        to('list'),
+        { path: 'list', element: page(() => import('./promotions/PromotionsPages'), 'PromotionsPage') },
+        { path: 'list/new', element: page(() => import('./promotions/PromotionsPages'), 'PromotionFormPage') },
+        { path: 'list/:id', element: page(() => import('./promotions/PromotionsPages'), 'PromotionFormPage') },
+        { path: 'simulator', element: page(() => import('./promotions/SimulatorGiftCardsHealth'), 'SimulatorPage') },
+        { path: 'gift-cards', element: page(() => import('./promotions/SimulatorGiftCardsHealth'), 'GiftCardsPage') },
+        { path: 'price-health', element: page(() => import('./promotions/SimulatorGiftCardsHealth'), 'PriceHealthPage') },
+      ],
+    },
+  ]),
   needs('review:moderate', [{ path: 'reviews', element: page(() => import('./pages/ReviewsAndUsers'), 'ReviewsPage') }]),
   needs('coupon:write', [{ path: 'coupons', element: page(() => import('./pages/CouponsPage')) }]),
   needs('user:read', [
