@@ -121,7 +121,7 @@ async function withItem(injector: Injector, productId: string, quantity: number)
   const { products } = await loadCatalogData();
   const store = injector.get(CartStore);
   await store.refresh();
-  await store.add({ variantId: products.find((p) => p.id === productId)?.variants[0].id as string, quantity, openMiniCart: false });
+  await store.add({ productId, variantId: products.find((p) => p.id === productId)?.variants[0].id as string, quantity, title: 'T', openMiniCart: false });
   return store;
 }
 

@@ -1,4 +1,4 @@
-import { act, fireEvent } from '@testing-library/react';
+import { act } from '@testing-library/react';
 import { firstValueFrom } from 'rxjs';
 import { WishlistStore } from '@shop/core';
 import { AlertApi, CartApi, CatalogApi, OrderApi } from '@shop/data-access';
@@ -199,6 +199,5 @@ describe('account pages', () => {
     await page.settle(15);
     main = page.main();
     expect(text(main)).toContain('No alerts yet');
-    expect(fireEvent).toBeDefined();
   }, 30000);
 });

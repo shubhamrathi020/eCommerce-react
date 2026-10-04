@@ -3,7 +3,7 @@ import { firstValueFrom } from 'rxjs';
 import type { Injector } from '@shop/core';
 import { CartApi, CatalogApi, OrderApi } from '@shop/data-access';
 import { AuthStore } from '@shop/state';
-import { button, click, fill, fillSelector, violations } from '@shop/ui/testing';
+import { button, click, fill, violations } from '@shop/ui/testing';
 import { demo, open } from '../test-harness';
 
 const text = (root: HTMLElement) => root.textContent ?? '';
@@ -111,7 +111,6 @@ describe('writing and voting on reviews', () => {
     await page.settle(20);
     expect(text(main)).toContain('Your review was deleted.');
     expect(await violations(page.root())).toEqual([]);
-    expect(fillSelector).toBeDefined();
   }, 60000);
 
   it('helpful votes need sign in, toggle for buyers of other reviews, and update the count', async () => {

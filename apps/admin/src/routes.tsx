@@ -3,7 +3,6 @@ import { createBrowserRouter, Navigate, type RouteObject } from 'react-router';
 import { RequireAuth, RequirePermission } from '@shop/state';
 import { Spinner } from '@shop/ui';
 import { AdminShell } from './layouts/AdminShell';
-import { AnalyticsLayout } from './analytics/Analytics';
 import { ContentLayout, InventoryLayout, MarketplaceLayout, NotificationsLayout, PromotionsLayout, ReturnsLayout } from './layouts/SectionLayout';
 
 /** Every screen is lazy-loaded to keep the initial bundle small. `pick` selects a named export of the module. */
@@ -91,7 +90,7 @@ const children: RouteObject[] = [
   needs('analytics:read', [
     {
       path: 'analytics',
-      element: <AnalyticsLayout />,
+      element: page(() => import('./analytics/Analytics'), 'AnalyticsLayout'),
       children: [
         to('funnel'),
         { path: 'funnel', element: page(() => import('./analytics/Analytics'), 'FunnelPage') },

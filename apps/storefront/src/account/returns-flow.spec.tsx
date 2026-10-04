@@ -2,7 +2,7 @@ import { act, fireEvent } from '@testing-library/react';
 import type { Order } from '@ecom/contracts';
 import type { Injector } from '@shop/core';
 import { MockOrderStore, loadCatalogData } from '@shop/data-access';
-import { button, click, field, fill, fillSelector, violations } from '@shop/ui/testing';
+import { button, click, field, fill, violations } from '@shop/ui/testing';
 import { demo, open, openSignedIn } from '../test-harness';
 
 const DAY = 86_400_000;
@@ -148,6 +148,5 @@ describe('returns and support pages', () => {
     main = page.main();
     expect(text(main)).toContain('Box was damaged');
     expect(await violations(page.root())).toEqual([]);
-    expect(fillSelector).toBeDefined();
   }, 40000);
 });

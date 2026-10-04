@@ -1,5 +1,5 @@
 import { act, cleanup, render } from '@testing-library/react';
-import { RouterProvider, createMemoryRouter } from 'react-router';
+import { MemoryRouter, RouterProvider, createMemoryRouter, useLocation } from 'react-router';
 import { InjectorProvider, MemoryStorage, STORAGE, createInjector, type Injector } from '@shop/core';
 import { DEMO_ACCOUNTS, provideAdminDataAccess } from '@shop/data-access';
 import { AuthStore } from '@shop/state';
@@ -50,3 +50,28 @@ export const openSignedIn = (url: string, prepare?: (injector: Injector) => Prom
     await auth.login(demo.email, demo.password);
     await prepare?.(injector);
   });
+
+/** Mounts a single component (inside the injector and a router) instead of the whole storefront. */
+export async function mount(ui: React.ReactElement, route = '/') {
+  cleanup();
+  localStorage.clear();
+  const injector = createInjector([storefrontProviders(config), provideAdminDataAccess({ useMocks: true }), { provide: STORAGE, useValue: new MemoryStorage() }]);
+  let location = '';
+  function Probe() {
+    const l = useLocation();
+    location = l.pathname + l.search;
+    return null;
+  }
+  const view = render(
+    <InjectorProvider injector={injector}>
+      <MemoryRouter initialEntries={[route]}>
+        <Probe />
+        {ui}
+      </MemoryRouter>
+    </InjectorProvider>,
+  );
+  const root = () => view.container;
+  const settle = (rounds?: number) => settleDom(root, rounds);
+  await settle(5);
+  return { root, injector, settle, location: () => location };
+}
