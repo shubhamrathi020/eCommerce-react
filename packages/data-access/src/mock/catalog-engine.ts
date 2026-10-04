@@ -8,7 +8,7 @@ import type {
   ListingResult,
   Product,
 } from '@ecom/contracts';
-import { ApiException, LOW_STOCK_THRESHOLD, bestDiscount, cheapestVariant, sortProducts, stockStatusOf, toSummary } from '@ecom/contracts';
+import { ApiException, LOW_STOCK_THRESHOLD, bestDiscount, sortProducts, stockStatusOf, toSummary } from '@ecom/contracts';
 import { buildIndex, searchProducts } from './search-engine';
 
 // Re-exported so existing imports of this module keep working; the rules themselves now live in

@@ -42,9 +42,10 @@ export function useResource<T>(load: () => Observable<T> | Promise<T>, deps: rea
         if (id === latest.current) setState((s) => ({ status: 'error', value: s.value, error, loading: false }));
       },
     );
+    const counter = latest;
     return () => {
       // A newer request (or unmount) makes this answer irrelevant.
-      if (latest.current === id) latest.current++;
+      if (counter.current === id) counter.current++;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [...deps, tick, enabled]);

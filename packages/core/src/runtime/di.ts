@@ -4,7 +4,6 @@
  * run unchanged. A class marked `@Injectable({ providedIn: 'root' })` is created on first use; an abstract class (an API
  * contract) must be provided explicitly, exactly as in Angular.
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type Ctor<T = any> = abstract new (...args: any[]) => T;
 
 export class InjectionToken<T> {
@@ -104,6 +103,7 @@ export class Injector {
   /** Runs `fn` so that `inject()` calls inside it resolve from this injector. */
   run<T>(fn: () => T): T {
     const outer = current;
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
     current = this;
     try {
       return fn();

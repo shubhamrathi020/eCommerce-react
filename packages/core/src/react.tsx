@@ -34,6 +34,8 @@ export function useSignal<T>(s: Signal<T>): T {
 export function useT(): (key: string, params?: MessageParams) => string {
   const i18n = useService(I18nService);
   const locale = useSignal(i18n.locale);
+  // `locale` is not read inside; it is here so the function identity changes with the language and consumers re-render.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   return useMemo(() => (key: string, params?: MessageParams) => i18n.t(key, params), [i18n, locale]);
 }
 
@@ -41,6 +43,7 @@ export function useT(): (key: string, params?: MessageParams) => string {
 export function useDate(): (value: Date | string | number | null | undefined, pattern?: string) => string {
   const i18n = useService(I18nService);
   const locale = useSignal(i18n.locale);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   return useMemo(() => (value, pattern) => i18n.date(value, pattern), [i18n, locale]);
 }
 
@@ -48,5 +51,6 @@ export function useDate(): (value: Date | string | number | null | undefined, pa
 export function useMoney(): (value: Money | null | undefined) => string {
   const i18n = useService(I18nService);
   const locale = useSignal(i18n.locale);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   return useMemo(() => (value) => (value ? formatMoney(value, i18n.info().intl) : ''), [i18n, locale]);
 }

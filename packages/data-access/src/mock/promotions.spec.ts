@@ -8,7 +8,6 @@ import {
   AdminPromotionApi,
   AuthApi,
   CartApi,
-  CheckoutApi,
   DEMO_ACCOUNTS,
   MockOrderStore,
   MockPromotionStore,

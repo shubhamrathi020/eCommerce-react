@@ -2,6 +2,7 @@
   "name": "ecommerce-react",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "license": "MIT",
   "description": "React implementation of the shop's storefront, admin console and seller portal.",
   "scripts": {

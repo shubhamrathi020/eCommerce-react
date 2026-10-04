@@ -10,7 +10,7 @@ export function Tabs({ tabs, label = 'Sections' }: { tabs: Array<{ label: string
   const onKeyDown = (e: React.KeyboardEvent) => {
     const count = tabs.length;
     const move = ({ ArrowRight: 1, ArrowLeft: -1 } as Record<string, number>)[e.key];
-    let next = selected;
+    let next: number;
     if (move) next = (selected + move + count) % count;
     else if (e.key === 'Home') next = 0;
     else if (e.key === 'End') next = count - 1;

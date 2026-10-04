@@ -20,7 +20,6 @@ import {
   provideAdminDataAccess,
   provideDataAccess,
 } from '../index';
-import { MockNotificationStore } from './notification-store';
 
 const config = { useMocks: true, mockLatencyMs: 0, apiBaseUrl: '', siteName: 'S', siteUrl: 'http://x', features: {} };
 const customer = DEMO_ACCOUNTS[0];
@@ -90,7 +89,6 @@ describe('notification preferences', () => {
 describe('alert subscriptions and their triggers', () => {
   let auth: AuthApi;
   let alerts: AlertApi;
-  let cart: CartApi;
   let catalog: CatalogApi;
   let inventory: AdminInventoryApi;
   let mailbox: MockMailbox;
@@ -103,7 +101,6 @@ describe('alert subscriptions and their triggers', () => {
     fresh();
     auth = TestBed.inject(AuthApi);
     alerts = TestBed.inject(AlertApi);
-    cart = TestBed.inject(CartApi);
     catalog = TestBed.inject(CatalogApi);
     inventory = TestBed.inject(AdminInventoryApi);
     mailbox = TestBed.inject(MockMailbox);
