@@ -1,0 +1,116 @@
+/* Design tokens (see steering/design.md). Change values here to restyle every app. */
+@import '@fontsource-variable/inter';
+
+@theme {
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  --color-bg: #ffffff;
+  --color-surface: #ffffff;
+  --color-surface-alt: #f9fafb;
+  --color-border: #e5e7eb;
+  --color-border-strong: #6b7280;
+  --color-text: #111827;
+  --color-text-muted: #4b5563;
+  --color-primary: #4f46e5;
+  --color-primary-hover: #4338ca;
+  --color-primary-contrast: #ffffff;
+  --color-accent: #f59e0b;
+  --color-success: #15803d;
+  --color-warning: #b45309;
+  --color-danger: #dc2626;
+  --color-info: #0369a1;
+  --color-sale: #b91c1c;
+  /* Text on a solid status colour (badges, banners). White in light mode; dark in dark mode where the status colours are lighter. */
+  --color-on-status: #ffffff;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+
+  --shadow-card: 0 1px 2px rgb(17 24 39 / 0.06), 0 1px 3px rgb(17 24 39 / 0.1);
+  --shadow-popover: 0 4px 12px rgb(17 24 39 / 0.12);
+  --shadow-modal: 0 16px 40px rgb(17 24 39 / 0.2);
+
+  --z-dropdown: 10;
+  --z-sticky: 20;
+  --z-drawer: 30;
+  --z-modal: 40;
+  --z-toast: 50;
+
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/*
+ * Dark theme (BRD 18, LX-04). Applied when the visitor chose dark (data-theme="dark" on <html>), or when they chose nothing
+ * (no data-theme) and their device prefers dark. data-theme="light" always wins. Pairs are checked for WCAG AA in
+ * libs/shared/ui/src/styles/theme.spec.ts, so changing a value here is tested.
+ */
+:root {
+  color-scheme: light;
+}
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --color-bg: #0b1020;
+  --color-surface: #111827;
+  --color-surface-alt: #1f2937;
+  --color-border: #374151;
+  --color-border-strong: #9ca3af;
+  --color-text: #f9fafb;
+  --color-text-muted: #d1d5db;
+  --color-primary: #a5b4fc;
+  --color-primary-hover: #c7d2fe;
+  --color-primary-contrast: #0b1020;
+  --color-success: #4ade80;
+  --color-warning: #fbbf24;
+  --color-danger: #f87171;
+  --color-info: #38bdf8;
+  --color-sale: #fb7185;
+  --color-on-status: #0b1020;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+    --color-bg: #0b1020;
+    --color-surface: #111827;
+    --color-surface-alt: #1f2937;
+    --color-border: #374151;
+    --color-border-strong: #9ca3af;
+    --color-text: #f9fafb;
+    --color-text-muted: #d1d5db;
+    --color-primary: #a5b4fc;
+    --color-primary-hover: #c7d2fe;
+    --color-primary-contrast: #0b1020;
+    --color-success: #4ade80;
+    --color-warning: #fbbf24;
+    --color-danger: #f87171;
+    --color-info: #38bdf8;
+    --color-sale: #fb7185;
+    --color-on-status: #0b1020;
+  }
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    color: var(--color-text);
+    background: var(--color-bg);
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    margin: 0;
+    line-height: 1.5;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}

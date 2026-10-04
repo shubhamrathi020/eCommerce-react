@@ -2,6 +2,7 @@ import { createContext, useContext, useMemo, useSyncExternalStore, type ReactNod
 import { type Injector, type Signal, type Token, rootInjector, subscribeTo } from './runtime';
 import { I18nService } from './lib/i18n/i18n.service';
 import type { MessageParams } from './lib/i18n/message-format';
+import { type Money, formatMoney } from '@ecom/contracts';
 
 const InjectorContext = createContext<Injector | null>(null);
 
@@ -41,4 +42,11 @@ export function useDate(): (value: Date | string | number | null | undefined, pa
   const i18n = useService(I18nService);
   const locale = useSignal(i18n.locale);
   return useMemo(() => (value, pattern) => i18n.date(value, pattern), [i18n, locale]);
+}
+
+/** A money formatter that follows the shop's language (grouping, digits and symbol placement); the stored amount never changes. */
+export function useMoney(): (value: Money | null | undefined) => string {
+  const i18n = useService(I18nService);
+  const locale = useSignal(i18n.locale);
+  return useMemo(() => (value) => (value ? formatMoney(value, i18n.info().intl) : ''), [i18n, locale]);
 }

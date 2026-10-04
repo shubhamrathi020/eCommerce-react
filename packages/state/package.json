@@ -1,0 +1,9 @@
+{
+  "name": "@shop/state",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./src/index.ts" },
+  "scripts": { "typecheck": "tsc -p tsconfig.json", "test": "vitest run --passWithNoTests" },
+  "dependencies": { "@shop/core": "workspace:*", "@shop/data-access": "workspace:*" }
+}
