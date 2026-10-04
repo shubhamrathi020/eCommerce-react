@@ -32,6 +32,33 @@ const children: RouteObject[] = [
   needs('product:write', [{ path: 'products/new', element: page(() => import('./products/ProductFormPage')) }]),
   { path: 'orders', element: page(() => import('./orders/OrdersPage')) },
   { path: 'orders/:id', element: page(() => import('./orders/OrderDetailPage')) },
+  needs('content:write', [
+    {
+      path: 'content',
+      element: <ContentLayout />,
+      children: [
+        to('banners'),
+        { path: 'banners', element: page(() => import('./content/BannersAndSections'), 'BannersPage') },
+        { path: 'sections', element: page(() => import('./content/BannersAndSections'), 'SectionsPage') },
+        { path: 'pages', element: page(() => import('./content/PagesLinksRedirects'), 'PagesPage') },
+        { path: 'links', element: page(() => import('./content/PagesLinksRedirects'), 'LinksPage') },
+        { path: 'redirects', element: page(() => import('./content/PagesLinksRedirects'), 'RedirectsPage') },
+      ],
+    },
+  ]),
+  needs('inventory:write', [
+    {
+      path: 'inventory',
+      element: <InventoryLayout />,
+      children: [
+        to('stock'),
+        { path: 'stock', element: page(() => import('./inventory/StockPage')) },
+        { path: 'ledger', element: page(() => import('./inventory/LedgerImportSettings'), 'LedgerPage') },
+        { path: 'import', element: page(() => import('./inventory/LedgerImportSettings'), 'ImportPage') },
+        { path: 'settings', element: page(() => import('./inventory/LedgerImportSettings'), 'InventorySettingsPage') },
+      ],
+    },
+  ]),
   needs('review:moderate', [{ path: 'reviews', element: page(() => import('./pages/ReviewsAndUsers'), 'ReviewsPage') }]),
   needs('coupon:write', [{ path: 'coupons', element: page(() => import('./pages/CouponsPage')) }]),
   needs('user:read', [

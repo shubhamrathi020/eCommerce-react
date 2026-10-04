@@ -102,6 +102,9 @@ importers:
       '@shop/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      dompurify:
+        specifier: ^3
+        version: 3.4.16
 
   apps/seller:
     dependencies:

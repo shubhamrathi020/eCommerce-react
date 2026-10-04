@@ -14,6 +14,7 @@
     "@shop/core": "workspace:*",
     "@shop/data-access": "workspace:*",
     "@shop/state": "workspace:*",
-    "@shop/ui": "workspace:*"
+    "@shop/ui": "workspace:*",
+    "dompurify": "^3"
   }
 }
