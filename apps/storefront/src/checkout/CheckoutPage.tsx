@@ -6,7 +6,7 @@ import { AnalyticsService, SeoService, ToastService, useDate, useMoney, useServi
 import { AddressBookApi, CheckoutApi, OrderApi, PaymentApi } from '@shop/data-access';
 import { AuthStore, CartStore } from '@shop/state';
 import { Button, CartLine, FormField, OrderSummary, Skeleton, Stepper, cx, inputClass } from '@shop/ui';
-import { MockPaymentLauncher, MockRazorpay, type PaymentLauncher } from './payment';
+import { AutoPaymentLauncher, MockRazorpay, type PaymentLauncher } from './payment';
 
 const STEPS = ['Address', 'Delivery', 'Payment', 'Review'];
 
@@ -36,7 +36,7 @@ export default function CheckoutPage() {
   const checkout = useService(CheckoutApi);
   const orders = useService(OrderApi);
   const payments = useService(PaymentApi);
-  const launcher: PaymentLauncher = useService(MockPaymentLauncher);
+  const launcher: PaymentLauncher = useService(AutoPaymentLauncher);
   const analytics = useService(AnalyticsService);
   const seo = useService(SeoService);
   const toast = useService(ToastService);
@@ -184,7 +184,7 @@ export default function CheckoutPage() {
   const pay = async (orderId: string) => {
     analytics.track({ name: 'payment_start' });
     const session = await firstValueFrom(payments.initiate(orderId));
-    const outcome = await launcher.open(session);
+    const outcome = await launcher.open(session, { name: values.name.trim(), email: values.email.trim(), phone: values.phone });
     if (outcome.status === 'success') {
       await finish(await firstValueFrom(payments.confirm(orderId, outcome.result)));
     } else if (outcome.status === 'failed') {

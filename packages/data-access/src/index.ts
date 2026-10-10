@@ -8,7 +8,7 @@ export * from './lib/cms.api';
 export * from './lib/newsletter.api';
 export * from './lib/provide-data-access';
 export { LOW_STOCK_THRESHOLD } from './mock/catalog-engine';
-export { mockSignature } from './mock/mock-payment.api';
+export { MOCK_RAZORPAY_KEY_ID, mockSignature } from './mock/mock-payment.api';
 export { COD_MAX_TOTAL, FREE_SHIPPING_THRESHOLD, MAX_LINE_QUANTITY } from './mock/cart-engine';
 export { MockMailbox, type MockMail } from './mock/mock-mailbox';
 export { passwordProblem } from './mock/mock-auth.api';

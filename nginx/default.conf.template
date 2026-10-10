@@ -29,6 +29,8 @@ server {
     try_files $uri =404;
   }
 
+  # The @PAY_*@ markers in the Content-Security-Policy below are filled in when the image is built (see the Dockerfile): the
+  # storefront, which takes payments, lets Razorpay's checkout script, frame, API and images in; the other apps get nothing extra.
   # Single-page app: unknown paths fall back to index.html. Security headers are repeated here because nginx does not inherit
   # add_header into a block that defines its own.
   location / {
@@ -38,7 +40,7 @@ server {
     add_header X-Frame-Options "DENY" always;
     add_header Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()" always;
     add_header Cross-Origin-Opener-Policy "same-origin" always;
-    add_header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: ${API_ORIGIN}; font-src 'self'; connect-src 'self' ${API_ORIGIN}; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'" always;
+    add_header Content-Security-Policy "default-src 'self'; script-src 'self'@PAY_SCRIPT@; style-src 'self' 'unsafe-inline'; img-src 'self' data: ${API_ORIGIN}@PAY_IMG@; font-src 'self'; connect-src 'self' ${API_ORIGIN}@PAY_CONNECT@; frame-src 'self'@PAY_FRAME@; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'" always;
     try_files $uri $uri/ /index.html;
   }
 }

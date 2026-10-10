@@ -23,12 +23,24 @@ COPY tsconfig.base.json ./
 RUN pnpm install --frozen-lockfile
 RUN pnpm --filter @shop/${APP} build
 
+# The nginx template with this app's Content-Security-Policy filled in. Only the storefront takes payments, so only it may
+# load Razorpay's checkout (its script, its frame, its API and its images); the admin and seller apps stay locked down.
+COPY nginx/default.conf.template /tmp/default.conf.template
+RUN if [ "$APP" = "storefront" ]; then \
+      sed -i -e 's|@PAY_SCRIPT@| https://checkout.razorpay.com|' \
+             -e 's|@PAY_IMG@| https://cdn.razorpay.com|' \
+             -e 's|@PAY_CONNECT@| https://api.razorpay.com https://lumberjack.razorpay.com|' \
+             -e 's|@PAY_FRAME@| https://api.razorpay.com https://checkout.razorpay.com|' /tmp/default.conf.template; \
+    else \
+      sed -i -e 's|@PAY_[A-Z]*@||g' /tmp/default.conf.template; \
+    fi
+
 # nginx-unprivileged runs as a non-root user and listens on 8080.
 FROM nginxinc/nginx-unprivileged:1.27-alpine AS runtime
 ARG APP
 # Files in /etc/nginx/templates are run through envsubst at start-up, so the Content-Security-Policy can name the API origin.
 ENV API_ORIGIN=http://localhost:3334
-COPY nginx/default.conf.template /etc/nginx/templates/default.conf.template
+COPY --from=build /tmp/default.conf.template /etc/nginx/templates/default.conf.template
 COPY --from=build /app/apps/${APP}/dist /usr/share/nginx/html
 EXPOSE 8080
 HEALTHCHECK --interval=15s --timeout=3s --start-period=5s --retries=3 \
