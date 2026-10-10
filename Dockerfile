@@ -25,9 +25,10 @@ RUN pnpm --filter @shop/${APP} build
 
 # The nginx template with this app's Content-Security-Policy filled in. Only the storefront takes payments, so only it may
 # load Razorpay's checkout (its script, its frame, its API and its images); the admin and seller apps stay locked down.
+# Checkout.js loads a second script from cdn.razorpay.com (its fraud check); a production run showed it blocked without it.
 COPY nginx/default.conf.template /tmp/default.conf.template
 RUN if [ "$APP" = "storefront" ]; then \
-      sed -i -e 's|@PAY_SCRIPT@| https://checkout.razorpay.com|' \
+      sed -i -e 's|@PAY_SCRIPT@| https://checkout.razorpay.com https://cdn.razorpay.com|' \
              -e 's|@PAY_IMG@| https://cdn.razorpay.com|' \
              -e 's|@PAY_CONNECT@| https://api.razorpay.com https://lumberjack.razorpay.com|' \
              -e 's|@PAY_FRAME@| https://api.razorpay.com https://checkout.razorpay.com|' /tmp/default.conf.template; \
